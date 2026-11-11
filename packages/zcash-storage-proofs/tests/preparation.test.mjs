@@ -591,11 +591,14 @@ test("tool adapter retains bounded diagnostics for explicit caller inspection", 
     "../dist/toolchain.js"
   );
   const { createHash } = await import("node:crypto");
+  // A private copy: the adapter rejects a tool that is group- or world-writable,
+  // which the Node.js binary of a hosted runner can be.
+  const node = path.join(dir, "node-for-diagnostics");
+  fs.copyFileSync(process.execPath, node);
+  fs.chmodSync(node, 0o755);
   const tool = {
-    path: process.execPath,
-    sha256: createHash("sha256")
-      .update(fs.readFileSync(process.execPath))
-      .digest("hex"),
+    path: node,
+    sha256: createHash("sha256").update(fs.readFileSync(node)).digest("hex"),
   };
   await assert.rejects(
     () =>
