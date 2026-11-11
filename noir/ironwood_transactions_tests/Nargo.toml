@@ -1,0 +1,8 @@
+[package]
+name = "ironwood_transactions_tests"
+type = "lib"
+authors = ["Michael Connor"]
+compiler_version = ">=1.0.0"
+
+[dependencies]
+ironwood = { path = "../ironwood" }

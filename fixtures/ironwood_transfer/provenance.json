@@ -1,0 +1,17 @@
+{
+  "files": {
+    "bundle.json": "5e13156c8c797c3afd35d7180d94252763c68c8d78bbcca745c6639a5501afc5",
+    "semantics.json": "c559c9b18d98877c52e50fd4e7a2debbd3af6b169f7d51d978648b840be51ff4"
+  },
+  "native_sources": {
+    "halo2": {
+      "repository": "https://github.com/zcash/halo2",
+      "commit": "2d54aaf07c8135d0ce54313048999b4002b4cfbf"
+    },
+    "orchard": {
+      "repository": "https://github.com/zcash/orchard",
+      "commit": "616a669df8c9a59c33d47064d3ce04b25d026b2e"
+    }
+  },
+  "scope": "Retained public synthetic Action and note inputs. Source hashes check integrity only."
+}

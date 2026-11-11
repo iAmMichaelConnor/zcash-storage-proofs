@@ -1,0 +1,74 @@
+{
+  "name": "zcash-storage-proofs",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Versioned, offline Ironwood witness preparation for pinned Aztec v6 circuits",
+  "author": "Michael Connor",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iAmMichaelConnor/zcash-storage-proofs",
+    "directory": "packages/zcash-storage-proofs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./native": {
+      "types": "./dist/native.d.ts",
+      "import": "./dist/native.js"
+    },
+    "./toolchain": {
+      "types": "./dist/toolchain.d.ts",
+      "import": "./dist/toolchain.js"
+    },
+    "./aztec": {
+      "types": "./dist/aztec.d.ts",
+      "import": "./dist/aztec.js"
+    },
+    "./profiles": {
+      "types": "./dist/profiles.d.ts",
+      "import": "./dist/profiles.js"
+    },
+    "./schemas/*": "./src/schemas/*"
+  },
+  "bin": {
+    "ironwood-prepare": "./bin/ironwood-prepare.mjs"
+  },
+  "files": [
+    "dist",
+    "bin",
+    "profiles/catalogue.v1.json",
+    "src/schemas",
+    "docs/*.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "npm run build && node --test tests/*.test.mjs",
+    "test:profiles": "npm run build && node --test tests/profiles.test.mjs",
+    "test:package": "npm run build && node tests/package-consumer.mjs",
+    "fixtures": "python3 -B tests/prepare-fixtures.py",
+    "fixtures:check": "python3 -B tests/prepare-fixtures.py --check",
+    "catalogue": "python3 -B scripts/profile_catalogue.py",
+    "catalogue:check": "python3 -B scripts/profile_catalogue.py --check",
+    "schemas": "python3 -B scripts/host_schemas.py",
+    "schemas:check": "python3 -B scripts/host_schemas.py --check",
+    "prepack": "python3 -B scripts/package-assets.py"
+  },
+  "dependencies": {
+    "@noble/hashes": "1.8.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.19.0",
+    "prettier": "3.6.2",
+    "typescript": "5.9.3"
+  }
+}

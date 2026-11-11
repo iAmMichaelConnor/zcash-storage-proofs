@@ -1,0 +1,350 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:zcash-storage-proofs:created-in-block:v1",
+  "description": "Structural envelope only. Host validation also checks modulus bounds, canonical encodings, curve and hash bindings. No checkpoint authorization is implied.",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "protocol": {
+      "type": "object",
+      "properties": {
+        "pool": {
+          "const": "ironwood-v3"
+        },
+        "era": {
+          "const": "nu6.3"
+        },
+        "network": {
+          "enum": [
+            "mainnet",
+            "testnet"
+          ]
+        }
+      },
+      "required": [
+        "pool",
+        "era",
+        "network"
+      ],
+      "additionalProperties": false
+    },
+    "checkpoint": {
+      "type": "object",
+      "properties": {
+        "height": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "hashLE": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "policyId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "height",
+        "hashLE",
+        "policyId"
+      ],
+      "additionalProperties": false
+    },
+    "kind": {
+      "const": "created-in-block"
+    },
+    "headerHex": {
+      "type": "string",
+      "pattern": "^([0-9a-f]{2})*$"
+    },
+    "transaction": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "version": {
+              "const": 4
+            },
+            "txidLE": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "rawHex": {
+              "type": "string",
+              "pattern": "^([0-9a-f]{2})*$"
+            }
+          },
+          "required": [
+            "version",
+            "txidLE",
+            "rawHex"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "version": {
+              "enum": [
+                5,
+                6
+              ]
+            },
+            "txidLE": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "effects": {
+              "type": "object",
+              "properties": {
+                "compact_actions": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 255
+                    },
+                    "minItems": 148,
+                    "maxItems": 148
+                  }
+                },
+                "memos_digest": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 255
+                  },
+                  "minItems": 32,
+                  "maxItems": 32
+                },
+                "noncompact_digest": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 255
+                  },
+                  "minItems": 32,
+                  "maxItems": 32
+                },
+                "flags": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 7
+                },
+                "value_balance": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 255
+                  },
+                  "minItems": 8,
+                  "maxItems": 8
+                },
+                "transparent_digest": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 255
+                  },
+                  "minItems": 32,
+                  "maxItems": 32
+                },
+                "sapling_digest": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 255
+                  },
+                  "minItems": 32,
+                  "maxItems": 32
+                },
+                "orchard_digest": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 255
+                  },
+                  "minItems": 32,
+                  "maxItems": 32
+                },
+                "lock_time": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 4294967295
+                },
+                "expiry_height": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 4294967295
+                }
+              },
+              "required": [
+                "compact_actions",
+                "memos_digest",
+                "noncompact_digest",
+                "flags",
+                "value_balance",
+                "transparent_digest",
+                "sapling_digest",
+                "orchard_digest",
+                "lock_time",
+                "expiry_height"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "version",
+            "txidLE",
+            "effects"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "actionIndex": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "transactionIndex": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "transactionCount": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "siblings": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{64}$"
+      }
+    },
+    "note": {
+      "type": "object",
+      "properties": {
+        "receiver": {
+          "type": "object",
+          "properties": {
+            "g_d": {
+              "type": "object",
+              "properties": {
+                "x": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]*)$"
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "y": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]*)$"
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                }
+              },
+              "required": [
+                "x",
+                "y"
+              ],
+              "additionalProperties": false
+            },
+            "pk_d": {
+              "type": "object",
+              "properties": {
+                "x": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]*)$"
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "y": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]*)$"
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                }
+              },
+              "required": [
+                "x",
+                "y"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "g_d",
+            "pk_d"
+          ],
+          "additionalProperties": false
+        },
+        "value": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "rho": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(0|[1-9][0-9]*)$"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "rseedHex": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "receiver",
+        "value",
+        "rho",
+        "rseedHex"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "protocol",
+    "checkpoint",
+    "kind",
+    "headerHex",
+    "transaction",
+    "actionIndex",
+    "transactionIndex",
+    "transactionCount",
+    "siblings",
+    "note"
+  ],
+  "additionalProperties": false
+}

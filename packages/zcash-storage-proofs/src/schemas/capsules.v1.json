@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:zcash-storage-proofs:capsules:v1",
+  "description": "Structural envelope only. Host validation also checks modulus bounds, canonical encodings, curve and hash bindings. No checkpoint authorization is implied.",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "kind": {
+      "const": "capsules"
+    },
+    "capsules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "schemaVersion": {
+            "const": 1
+          },
+          "contractAddress": {
+            "type": "string",
+            "pattern": "^(0|[1-9][0-9]*)$"
+          },
+          "slot": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 4294967295
+          },
+          "scope": {
+            "const": "0"
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$"
+            }
+          }
+        },
+        "required": [
+          "schemaVersion",
+          "contractAddress",
+          "slot",
+          "scope",
+          "fields"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "kind",
+    "capsules"
+  ],
+  "additionalProperties": false
+}

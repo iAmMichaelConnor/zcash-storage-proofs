@@ -1,0 +1,10 @@
+{
+  "reference/notes/src/bin/poseidon.rs": "b3016538aef89390e0d6a8fdfd8ac90b48bfa9a17c3235cd6a1c209b26784657",
+  "https://github.com/zcash/halo2/blob/2d54aaf07c8135d0ce54313048999b4002b4cfbf/halo2_poseidon/src/fp.rs": "b19d4e50867e67af232db34f88d2bf8629d6d7ee2496458a8e37ae758772acd5",
+  "https://github.com/zcash/halo2/blob/2d54aaf07c8135d0ce54313048999b4002b4cfbf/halo2_poseidon/src/p128pow5t3.rs": "5b46bc7ef7ee2480b85c7aeb96052301abb7dbff16f8d9d87c0c0abac3b6fc9c",
+  "noir/ironwood/src/poseidon/constants.nr": "bf48bd93e710b38101f30bd9186cae8ed7128d4a587b115642d66f161878d615",
+  "generatorOutputSha256": {
+    "noir/ironwood/src/poseidon/constants.nr": "2bfd981b3716ad91bf0b163dade4b8ff6346f36c62caa8cd09fc6d460374887d",
+    "note": "Output of scripts/generate_poseidon.py before nargo fmt. The committed file has the same 201 field elements in formatted layout."
+  }
+}

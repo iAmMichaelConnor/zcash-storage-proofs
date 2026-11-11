@@ -1,0 +1,9 @@
+[package]
+name = "aztec_contents_capsules_slow_test"
+type = "lib"
+authors = ["Michael Connor"]
+compiler_version = ">=1.0.0"
+
+[dependencies]
+aztec_contents_capsules_test = { path = "../tests" }
+note_value_test = { path = "../../note_value/tests" }

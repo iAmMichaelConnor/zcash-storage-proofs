@@ -1,0 +1,10 @@
+[package]
+name = "ironwood_notes_tests"
+type = "lib"
+authors = ["Michael Connor"]
+compiler_version = ">=1.0.0"
+
+[dependencies]
+ironwood = { path = "../ironwood" }
+bignum = { path = "../../vendor/noir-bignum" }
+bigcurve = { path = "../../vendor/noir_bigcurve" }

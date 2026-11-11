@@ -1,0 +1,21 @@
+[
+  {
+    "path": "zip_0244.standard.json",
+    "url": "https://raw.githubusercontent.com/zcash-hackworks/zcash-test-vectors/78321beacb0e0477e33cd002b56585a107c2708c/test-vectors/json/zip_0244.json",
+    "sha256": "3d20892f19cec18afba2ef2907bb8426192d0ea4eac2c0060c2f31ff78ad93a3"
+  },
+  {
+    "path": "zip_0244.json",
+    "url": "https://raw.githubusercontent.com/zcash-hackworks/zcash-test-vectors/78321beacb0e0477e33cd002b56585a107c2708c/test-vectors/zcash/zip_0244.json",
+    "sha256": "307b80fbfbcc13a0150696b70dd6a0aa8c1c222c622b65095f3c14467e40848b"
+  },
+  {
+    "path": "mined-mainnet-1687106.hex",
+    "url": "https://raw.githubusercontent.com/ZcashFoundation/zebra/b643adb069bf68728ec244aee4d8013853060082/zebra-test/src/vectors/block-main-1-687-106.txt",
+    "sha256": "0e0c7456caacfc7b48839bd603e3426c456d02f972a2f33dfc07d4d7bddc4776",
+    "height": 1687106,
+    "network": "mainnet",
+    "era": "nu5",
+    "scope": "historical parsing; explicitly rejected by NU6.3 witness preparation"
+  }
+]

@@ -1,0 +1,22 @@
+[workspace]
+members = [
+    "vendor/noir-bignum",
+    "vendor/noir_bigcurve",
+    "noir/ironwood",
+    "noir/ironwood_creation_tests",
+    "noir/ironwood_notes_tests",
+    "noir/ironwood_transactions_tests",
+    "noir/ironwood_slow_tests",
+    "noir/ironwood_aztec",
+    "examples/aztec_contents/contract",
+    "examples/aztec_contents/tests",
+    "examples/aztec_contents_capsules/contract",
+    "examples/aztec_contents_capsules/tests",
+    "examples/aztec_contents_capsules/slow_tests",
+    "examples/aztec_nullifier_absence/contract",
+    "examples/aztec_nullifier_absence/tests",
+    "examples/note_value/contract",
+    "examples/note_value/tests",
+    "examples/nullifier_absence_state/contract",
+    "examples/nullifier_absence_state/tests",
+]

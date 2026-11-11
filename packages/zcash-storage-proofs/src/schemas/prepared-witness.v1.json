@@ -1,0 +1,697 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:zcash-storage-proofs:prepared-witness:v1",
+  "description": "Structural envelope only. Host validation also checks modulus bounds, canonical encodings, curve and hash bindings. No checkpoint authorization is implied.",
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "const": 1
+        },
+        "protocol": {
+          "type": "object",
+          "properties": {
+            "pool": {
+              "const": "ironwood-v3"
+            },
+            "era": {
+              "const": "nu6.3"
+            },
+            "network": {
+              "enum": [
+                "mainnet",
+                "testnet"
+              ]
+            }
+          },
+          "required": [
+            "pool",
+            "era",
+            "network"
+          ],
+          "additionalProperties": false
+        },
+        "checkpoint": {
+          "type": "object",
+          "properties": {
+            "height": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            },
+            "hashLE": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "policyId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            }
+          },
+          "required": [
+            "height",
+            "hashLE",
+            "policyId"
+          ],
+          "additionalProperties": false
+        },
+        "kind": {
+          "const": "prepared-witness"
+        },
+        "contractAddress": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "capsules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "schemaVersion": {
+                "const": 1
+              },
+              "contractAddress": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]*)$"
+              },
+              "slot": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 4294967295
+              },
+              "scope": {
+                "const": "0"
+              },
+              "fields": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$"
+                }
+              }
+            },
+            "required": [
+              "schemaVersion",
+              "contractAddress",
+              "slot",
+              "scope",
+              "fields"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "validation": {
+          "type": "object",
+          "properties": {
+            "structure": {
+              "const": true
+            },
+            "hashBindings": {
+              "const": true
+            },
+            "checkpointAuthorized": {
+              "const": false
+            },
+            "proofVerified": {
+              "const": false
+            }
+          },
+          "required": [
+            "structure",
+            "hashBindings",
+            "checkpointAuthorized",
+            "proofVerified"
+          ],
+          "additionalProperties": false
+        },
+        "claim": {
+          "const": "contents"
+        },
+        "arguments": {
+          "type": "object",
+          "properties": {
+            "expected_hash": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 255
+              },
+              "minItems": 32,
+              "maxItems": 32
+            },
+            "header_height": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            },
+            "is_testnet": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "expected_hash",
+            "header_height",
+            "is_testnet"
+          ],
+          "additionalProperties": false
+        },
+        "expected": {
+          "type": "object",
+          "properties": {
+            "snapshotHeight": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            },
+            "rootLE": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "cmxLE": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "value": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$"
+            },
+            "receiver": {
+              "type": "object",
+              "properties": {
+                "g_d": {
+                  "type": "object",
+                  "properties": {
+                    "x": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "pattern": "^(0|[1-9][0-9]*)$"
+                      },
+                      "minItems": 3,
+                      "maxItems": 3
+                    },
+                    "y": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "pattern": "^(0|[1-9][0-9]*)$"
+                      },
+                      "minItems": 3,
+                      "maxItems": 3
+                    }
+                  },
+                  "required": [
+                    "x",
+                    "y"
+                  ],
+                  "additionalProperties": false
+                },
+                "pk_d": {
+                  "type": "object",
+                  "properties": {
+                    "x": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "pattern": "^(0|[1-9][0-9]*)$"
+                      },
+                      "minItems": 3,
+                      "maxItems": 3
+                    },
+                    "y": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "pattern": "^(0|[1-9][0-9]*)$"
+                      },
+                      "minItems": 3,
+                      "maxItems": 3
+                    }
+                  },
+                  "required": [
+                    "x",
+                    "y"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "g_d",
+                "pk_d"
+              ],
+              "additionalProperties": false
+            },
+            "rho": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]*)$"
+              },
+              "minItems": 3,
+              "maxItems": 3
+            },
+            "nativeProviderUsed": {
+              "type": "boolean"
+            },
+            "cmxSource": {
+              "const": "native-provider-unverified"
+            }
+          },
+          "required": [
+            "snapshotHeight",
+            "rootLE"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "protocol",
+        "checkpoint",
+        "kind",
+        "contractAddress",
+        "capsules",
+        "validation",
+        "claim",
+        "arguments",
+        "expected"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "const": 1
+        },
+        "protocol": {
+          "type": "object",
+          "properties": {
+            "pool": {
+              "const": "ironwood-v3"
+            },
+            "era": {
+              "const": "nu6.3"
+            },
+            "network": {
+              "enum": [
+                "mainnet",
+                "testnet"
+              ]
+            }
+          },
+          "required": [
+            "pool",
+            "era",
+            "network"
+          ],
+          "additionalProperties": false
+        },
+        "checkpoint": {
+          "type": "object",
+          "properties": {
+            "height": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            },
+            "hashLE": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "policyId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            }
+          },
+          "required": [
+            "height",
+            "hashLE",
+            "policyId"
+          ],
+          "additionalProperties": false
+        },
+        "kind": {
+          "const": "prepared-witness"
+        },
+        "contractAddress": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "capsules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "schemaVersion": {
+                "const": 1
+              },
+              "contractAddress": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]*)$"
+              },
+              "slot": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 4294967295
+              },
+              "scope": {
+                "const": "0"
+              },
+              "fields": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$"
+                }
+              }
+            },
+            "required": [
+              "schemaVersion",
+              "contractAddress",
+              "slot",
+              "scope",
+              "fields"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "validation": {
+          "type": "object",
+          "properties": {
+            "structure": {
+              "const": true
+            },
+            "hashBindings": {
+              "const": true
+            },
+            "checkpointAuthorized": {
+              "const": false
+            },
+            "proofVerified": {
+              "const": false
+            }
+          },
+          "required": [
+            "structure",
+            "hashBindings",
+            "checkpointAuthorized",
+            "proofVerified"
+          ],
+          "additionalProperties": false
+        },
+        "claim": {
+          "enum": [
+            "action-inclusion",
+            "created-in-block"
+          ]
+        },
+        "arguments": {
+          "type": "object",
+          "properties": {
+            "accepted_header_hash": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 255
+              },
+              "minItems": 32,
+              "maxItems": 32
+            }
+          },
+          "required": [
+            "accepted_header_hash"
+          ],
+          "additionalProperties": false
+        },
+        "expected": {
+          "type": "object",
+          "properties": {
+            "txidLE": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "selectedAction": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 255
+              },
+              "minItems": 148,
+              "maxItems": 148
+            },
+            "noteCommitmentCheckedByCircuit": {
+              "type": "boolean"
+            },
+            "actionCount": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            },
+            "actionCapacity": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          },
+          "required": [
+            "txidLE",
+            "selectedAction",
+            "noteCommitmentCheckedByCircuit",
+            "actionCount",
+            "actionCapacity"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "protocol",
+        "checkpoint",
+        "kind",
+        "contractAddress",
+        "capsules",
+        "validation",
+        "claim",
+        "arguments",
+        "expected"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "const": 1
+        },
+        "protocol": {
+          "type": "object",
+          "properties": {
+            "pool": {
+              "const": "ironwood-v3"
+            },
+            "era": {
+              "const": "nu6.3"
+            },
+            "network": {
+              "enum": [
+                "mainnet",
+                "testnet"
+              ]
+            }
+          },
+          "required": [
+            "pool",
+            "era",
+            "network"
+          ],
+          "additionalProperties": false
+        },
+        "checkpoint": {
+          "type": "object",
+          "properties": {
+            "height": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            },
+            "hashLE": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "policyId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            }
+          },
+          "required": [
+            "height",
+            "hashLE",
+            "policyId"
+          ],
+          "additionalProperties": false
+        },
+        "kind": {
+          "const": "prepared-witness"
+        },
+        "contractAddress": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "capsules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "schemaVersion": {
+                "const": 1
+              },
+              "contractAddress": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]*)$"
+              },
+              "slot": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 4294967295
+              },
+              "scope": {
+                "const": "0"
+              },
+              "fields": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$"
+                }
+              }
+            },
+            "required": [
+              "schemaVersion",
+              "contractAddress",
+              "slot",
+              "scope",
+              "fields"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "validation": {
+          "type": "object",
+          "properties": {
+            "structure": {
+              "const": true
+            },
+            "hashBindings": {
+              "const": true
+            },
+            "checkpointAuthorized": {
+              "const": false
+            },
+            "proofVerified": {
+              "const": false
+            }
+          },
+          "required": [
+            "structure",
+            "hashBindings",
+            "checkpointAuthorized",
+            "proofVerified"
+          ],
+          "additionalProperties": false
+        },
+        "claim": {
+          "enum": [
+            "nullifier-absence-from-activation",
+            "nullifier-absence-window"
+          ]
+        },
+        "profileId": {
+          "type": "string"
+        },
+        "operation": {
+          "enum": [
+            "verify",
+            "begin",
+            "extend"
+          ]
+        },
+        "arguments": {
+          "type": "object",
+          "properties": {
+            "queried_nf": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 255
+              },
+              "minItems": 32,
+              "maxItems": 32
+            },
+            "expected_tip_hash": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 255
+              },
+              "minItems": 32,
+              "maxItems": 32
+            },
+            "expected_tip_height": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            },
+            "is_testnet": {
+              "type": "boolean"
+            },
+            "count": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            },
+            "prior_height": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          },
+          "required": [
+            "queried_nf",
+            "expected_tip_hash",
+            "expected_tip_height",
+            "is_testnet"
+          ],
+          "additionalProperties": false
+        },
+        "authenticatedPriorStateRequired": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "protocol",
+        "checkpoint",
+        "kind",
+        "contractAddress",
+        "capsules",
+        "validation",
+        "claim",
+        "profileId",
+        "operation",
+        "arguments",
+        "authenticatedPriorStateRequired"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

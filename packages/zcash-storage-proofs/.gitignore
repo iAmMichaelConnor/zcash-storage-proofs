@@ -1,0 +1,7 @@
+/node_modules/
+/dist/
+*.tgz
+# Staged from the repository root by scripts/package-assets.py before npm pack.
+/docs/
+/LICENSE
+/NOTICE

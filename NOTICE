@@ -1,0 +1,48 @@
+zcash-storage-proofs
+Copyright 2026 Michael Connor
+
+This repository contains the following third-party material.
+
+vendor/noir-bignum
+  noir-lang/noir-bignum (https://github.com/noir-lang/noir-bignum), commit
+  78ed0df23307a9a6be7af68f09fca6a3d6a1b34e, with
+  patches/bignum-prechecked.patch applied. Only Nargo.toml, README.md, LICENSE
+  and src/ are copied. Apache-2.0 (vendor/noir-bignum/LICENSE).
+
+vendor/noir_bigcurve
+  noir-lang/noir_bigcurve (https://github.com/noir-lang/noir_bigcurve), commit
+  f9af3d8892db14c5f57d01e712455c1d6d9336f1, with its bignum dependency changed
+  to the path of vendor/noir-bignum. Only Nargo.toml, README.md and src/ are
+  copied. Apache-2.0; that revision predates the upstream licence file, so
+  vendor/noir_bigcurve/LICENSE is the file added upstream in commit
+  04b663b18ef2244f103faa5eff666927a1c65e17.
+
+patches/bignum-prechecked.patch
+  A change to noir-bignum made for this repository. It quotes upstream lines
+  as context. scripts/vendor.sh rebuilds both vendor directories from the
+  upstream commits and this patch, and checks that they match.
+
+packages/zcash-storage-proofs/tests/fixtures/zip_0244.json, zip_0244.standard.json
+  ZIP 244 test vectors from zcash-hackworks/zcash-test-vectors, commit
+  78321beacb0e0477e33cd002b56585a107c2708c, MIT OR Apache-2.0.
+
+packages/zcash-storage-proofs/tests/fixtures/mined-mainnet-1687106.hex
+  Mainnet block 1,687,106 as published in ZcashFoundation/zebra, commit
+  b643adb069bf68728ec244aee4d8013853060082 (zebra-test vectors), MIT OR
+  Apache-2.0.
+
+  Exact URLs and hashes of both are in
+  packages/zcash-storage-proofs/tests/fixtures/public-source-manifest.json.
+
+The Rust programs in reference/ and packages/zcash-storage-proofs/src/native depend
+on zcash/orchard (commit 616a669df8c9a59c33d47064d3ce04b25d026b2e), zcash/halo2 (commit
+2d54aaf07c8135d0ce54313048999b4002b4cfbf) and crates from crates.io, fetched
+by cargo and not copied here; orchard, halo2_poseidon and sinsemilla are
+licensed MIT OR Apache-2.0. The constants in noir/ironwood/src/poseidon/constants.nr,
+noir/ironwood/src/notes/spend_generator.nr, noir/ironwood/src/notes/nullifier_generator.nr
+and noir/ironwood/src/sinsemilla/generators.nr, and the native vectors under
+fixtures/ (listed in scripts/generate_native_fixtures.py), are output of those
+programs.
+
+The Zcash logo under docs/assets is the property of its owner; its source and
+terms are in docs/assets/README.md.

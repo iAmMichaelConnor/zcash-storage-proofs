@@ -1,0 +1,13 @@
+[package]
+name = "aztec_contents_capsules_test"
+type = "lib"
+authors = ["Michael Connor"]
+compiler_version = ">=1.0.0"
+
+[dependencies]
+aztec = { git = "https://github.com/aztec-labs-eng/aztec-nr", tag = "v6.0.0", directory = "aztec" }
+aztec_contents_capsules_contract = { path = "../contract" }
+note_value_test = { path = "../../note_value/tests" }
+ironwood = { path = "../../../noir/ironwood" }
+ironwood_aztec = { path = "../../../noir/ironwood_aztec" }
+bignum = { path = "../../../vendor/noir-bignum" }

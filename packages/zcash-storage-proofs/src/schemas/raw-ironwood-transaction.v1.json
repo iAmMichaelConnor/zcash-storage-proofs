@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:zcash-storage-proofs:raw-ironwood-transaction:v1",
+  "description": "Structural envelope only. Host validation also checks modulus bounds, canonical encodings, curve and hash bindings. No checkpoint authorization is implied.",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "kind": {
+      "const": "raw-ironwood-transaction"
+    },
+    "protocol": {
+      "type": "object",
+      "properties": {
+        "pool": {
+          "const": "ironwood-v3"
+        },
+        "era": {
+          "const": "nu6.3"
+        },
+        "network": {
+          "enum": [
+            "mainnet",
+            "testnet"
+          ]
+        }
+      },
+      "required": [
+        "pool",
+        "era",
+        "network"
+      ],
+      "additionalProperties": false
+    },
+    "rawTransactionHex": {
+      "type": "string",
+      "pattern": "^([0-9a-f]{2})*$"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "kind",
+    "protocol",
+    "rawTransactionHex"
+  ],
+  "additionalProperties": false
+}

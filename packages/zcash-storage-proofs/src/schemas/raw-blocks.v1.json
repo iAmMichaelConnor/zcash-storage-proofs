@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:zcash-storage-proofs:raw-blocks:v1",
+  "description": "Structural envelope only. Host validation also checks modulus bounds, canonical encodings, curve and hash bindings. No checkpoint authorization is implied.",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "protocol": {
+      "type": "object",
+      "properties": {
+        "pool": {
+          "const": "ironwood-v3"
+        },
+        "era": {
+          "const": "nu6.3"
+        },
+        "network": {
+          "enum": [
+            "mainnet",
+            "testnet"
+          ]
+        }
+      },
+      "required": [
+        "pool",
+        "era",
+        "network"
+      ],
+      "additionalProperties": false
+    },
+    "checkpoint": {
+      "type": "object",
+      "properties": {
+        "height": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "hashLE": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "policyId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "height",
+        "hashLE",
+        "policyId"
+      ],
+      "additionalProperties": false
+    },
+    "kind": {
+      "const": "raw-blocks"
+    },
+    "blocks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "height": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 4294967295
+          },
+          "rawHex": {
+            "type": "string",
+            "pattern": "^([0-9a-f]{2})*$"
+          }
+        },
+        "required": [
+          "height",
+          "rawHex"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "protocol",
+    "checkpoint",
+    "kind",
+    "blocks"
+  ],
+  "additionalProperties": false
+}

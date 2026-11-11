@@ -1,0 +1,196 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: iAmMichaelConnor <mike@aztec.foundation>
+Date: Tue, 10 Nov 2026 21:05:23 +0000
+Subject: [PATCH] feat: add RangeChecked and a prechecked quadratic expression
+
+`RangeChecked<T>` wraps a BigNum whose limbs are constrained to their range.
+`evaluate_quadratic_expression_prechecked` takes only such values and omits the
+per-call input range checks of `evaluate_quadratic_expression`; the quotient,
+carry and relation checks are unchanged.
+
+Local to zcash-storage-proofs (patches/bignum-prechecked.patch); not proposed
+upstream.
+---
+ src/bignum.nr                   | 68 +++++++++++++++++++++++++++++++++
+ src/fns/expressions.nr          | 25 ++++++++++++
+ src/tests/mod.nr                |  1 +
+ src/tests/range_checked_test.nr | 50 ++++++++++++++++++++++++
+ 4 files changed, 144 insertions(+)
+ create mode 100644 src/tests/range_checked_test.nr
+
+diff --git a/src/bignum.nr b/src/bignum.nr
+index 82524f8f2e0186e9c51803260b2b808a4716a75f..b12fddc31adbcbbe716785e536ea5194204d7c05 100644
+--- a/src/bignum.nr
++++ b/src/bignum.nr
+@@ -1019,3 +1019,71 @@ pub fn to_field<T: BigNum>(bn: T) -> Field {
+     let limbs = bn.get_limbs();
+     limbs_to_field(&params, &limbs)
+ }
++
++/// A BigNum value whose limbs are proven to be in range (`validate_in_range`).
++/// The field is private, so code outside this module can create a value only
++/// through the constrained constructors below. A Boolean selection
++/// (`if c { a } else { b }`) of two RangeChecked values keeps the bound.
++/// An unconstrained function return, an oracle result and a circuit or
++/// contract parameter are unchecked witnesses: never use this type there.
++/// The bound is only as strong as `T::validate_in_range` (a hand-written BigNum
++/// implementation is trusted), and code inside this crate can build the struct directly.
++pub struct RangeChecked<T> {
++    value: T,
++}
++
++impl<T: BigNum> RangeChecked<T> {
++    /// Constrains every limb to its range.
++    pub fn new(value: T) -> Self {
++        value.validate_in_range();
++        RangeChecked { value }
++    }
++
++    /// Constrains every limb to its range and the value to be less than the modulus.
++    pub fn canonical(value: T) -> Self {
++        value.validate_in_range();
++        value.validate_in_field();
++        RangeChecked { value }
++    }
++
++    pub fn zero() -> Self {
++        RangeChecked { value: T::zero() }
++    }
++
++    pub fn one() -> Self {
++        RangeChecked { value: T::one() }
++    }
++
++    pub fn value(self) -> T {
++        self.value
++    }
++}
++
++/// The checked quadratic relation without the repeated input range checks.
++/// Every term is a RangeChecked value, so its range check is already a constraint.
++/// This entry point retains all quotient, carry and equation checks.
++pub fn evaluate_quadratic_expression_prechecked<T: BigNum, let LHS_N: u32, let RHS_N: u32, let NUM_PRODUCTS: u32, let ADD_N: u32>(
++    lhs_terms: [[RangeChecked<T>; LHS_N]; NUM_PRODUCTS],
++    lhs_flags: [[bool; LHS_N]; NUM_PRODUCTS],
++    rhs_terms: [[RangeChecked<T>; RHS_N]; NUM_PRODUCTS],
++    rhs_flags: [[bool; RHS_N]; NUM_PRODUCTS],
++    linear_terms: [RangeChecked<T>; ADD_N],
++    linear_flags: [bool; ADD_N],
++) {
++    let params = T::params();
++    crate::fns::expressions::evaluate_quadratic_expression_prechecked(
++        &params,
++        &crate::utils::map::map(
++            &lhs_terms,
++            |bns| crate::utils::map::map(bns, |bn: &RangeChecked<T>| bn.value.get_limbs()),
++        ),
++        &lhs_flags,
++        &crate::utils::map::map(
++            &rhs_terms,
++            |bns| crate::utils::map::map(bns, |bn: &RangeChecked<T>| bn.value.get_limbs()),
++        ),
++        &rhs_flags,
++        &crate::utils::map::map(&linear_terms, |bn: &RangeChecked<T>| bn.value.get_limbs()),
++        &linear_flags,
++    )
++}
+diff --git a/src/fns/expressions.nr b/src/fns/expressions.nr
+index 8738ec385e329b7da65c1a71ece9ce4d5420de79..a10eecef6488b367d576b198909b55b080abc9c5 100644
+--- a/src/fns/expressions.nr
++++ b/src/fns/expressions.nr
+@@ -882,3 +882,28 @@ pub(crate) fn validate_udiv_mod_expression<let N: u32, let MOD_BITS: u32>(
+         compute_udiv_mod_expression::<N, MOD_BITS>(numerator, divisor, quotient, remainder);
+     validate_expression_is_zero(expression_limbs);
+ }
++
++// PRECONDITION: all input limbs already have the exact N/MOD_BITS bounds.
++// Omits input validation only. Quotient, carry, arity and relation checks remain.
++pub(crate) fn evaluate_quadratic_expression_prechecked<let N: u32, let MOD_BITS: u32, let LHS_N: u32, let RHS_N: u32, let NUM_PRODUCTS: u32, let ADD_N: u32>(
++    params: &BigNumParams<N, MOD_BITS>,
++    lhs_terms: &[[[u128; N]; LHS_N]; NUM_PRODUCTS],
++    lhs_flags: &[[bool; LHS_N]; NUM_PRODUCTS],
++    rhs_terms: &[[[u128; N]; RHS_N]; NUM_PRODUCTS],
++    rhs_flags: &[[bool; RHS_N]; NUM_PRODUCTS],
++    linear_terms: &[[u128; N]; ADD_N],
++    linear_flags: &[bool; ADD_N],
++) {
++    assert_product_limbs_fit_in_246_bits::<N, MOD_BITS, LHS_N, RHS_N, NUM_PRODUCTS>();
++
++    let expression_limbs: [Field; 2 * N - 1] = compute_quadratic_expression_with_modulus::<N, MOD_BITS, LHS_N, RHS_N, NUM_PRODUCTS, ADD_N>(
++        params,
++        lhs_terms,
++        lhs_flags,
++        rhs_terms,
++        rhs_flags,
++        linear_terms,
++        linear_flags,
++    );
++    validate_expression_is_zero(expression_limbs);
++}
+diff --git a/src/tests/mod.nr b/src/tests/mod.nr
+index e241d2ef102e51c9aa1e43557693eb018d964947..729eef825d9e37daf2fcbcfa9716abf036094391 100644
+--- a/src/tests/mod.nr
++++ b/src/tests/mod.nr
+@@ -5,3 +5,4 @@ mod eq_fixtures;
+ mod eq_test;
+ mod eq_hint_test;
+ mod neq_test;
++mod range_checked_test;
+diff --git a/src/tests/range_checked_test.nr b/src/tests/range_checked_test.nr
+new file mode 100644
+index 0000000000000000000000000000000000000000..d3125736f81c53f749c35b8b561fed470baa24ed
+--- /dev/null
++++ b/src/tests/range_checked_test.nr
+@@ -0,0 +1,50 @@
++use crate::bignum::{BigNum, evaluate_quadratic_expression_prechecked, RangeChecked};
++use crate::constants::TWO_POW_120;
++use crate::fields::bn254Fq::BN254_Fq;
++
++// a * b - c = 0 over range-checked terms, with c from the constrained `mul`.
++#[test]
++fn test_prechecked_quadratic_expression_accepts_product() {
++    let a = BN254_Fq::from_limbs([3, 5, 7]);
++    let b = BN254_Fq::from_limbs([11, 13, 17]);
++    let c = a * b;
++    evaluate_quadratic_expression_prechecked(
++        [[RangeChecked::new(a)]],
++        [[false]],
++        [[RangeChecked::canonical(b)]],
++        [[false]],
++        [RangeChecked::new(c)],
++        [true],
++    );
++}
++
++// The same relation as `evaluate_quadratic_expression`, with constant terms.
++#[test]
++fn test_prechecked_quadratic_expression_constants() {
++    let a = BN254_Fq::from_limbs([3, 5, 7]);
++    // a * 1 + 0 - a = 0
++    evaluate_quadratic_expression_prechecked(
++        [[RangeChecked::new(a)]],
++        [[false]],
++        [[RangeChecked::one()]],
++        [[false]],
++        [RangeChecked::zero(), RangeChecked::new(a)],
++        [false, true],
++    );
++    assert(RangeChecked::new(a).value() == a);
++}
++
++// A limb of 2^120 is outside the 120-bit limb range, so no RangeChecked value exists for it.
++#[test(should_fail_with = "call to assert_max_bit_size")]
++fn test_range_checked_rejects_wide_limb() {
++    let wide = BN254_Fq::from_limbs_unsafe([TWO_POW_120, 0, 0]);
++    let _ = RangeChecked::new(wide);
++}
++
++// MOD + 1 has in-range limbs, so only the `validate_in_field` subtraction rejects it.
++#[test(should_fail_with = "call to assert_max_bit_size")]
++fn test_range_checked_canonical_rejects_modulus_plus_one() {
++    let limbs = BN254_Fq::modulus().get_limbs();
++    let above = BN254_Fq::from_limbs_unsafe([limbs[0] + 1, limbs[1], limbs[2]]);
++    let _ = RangeChecked::canonical(above);
++}
+
+base-commit: 78ed0df23307a9a6be7af68f09fca6a3d6a1b34e
