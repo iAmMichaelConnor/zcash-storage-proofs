@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794414873629,
+  "lastUpdate": 1794415679344,
   "repoUrl": "https://github.com/iAmMichaelConnor/zcash-storage-proofs",
   "entries": {
     "ACIR Opcodes": [
@@ -87,6 +87,70 @@ window.BENCHMARK_DATA = {
           "url": "https://github.com/iAmMichaelConnor/zcash-storage-proofs/commit/42dc115f0e2c1b498cc6d4181fa183fd78894c29"
         },
         "date": 1794414871578,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "created_in_block/main",
+            "value": 173970,
+            "unit": "acir_opcodes"
+          },
+          {
+            "name": "header_history/main",
+            "value": 17173,
+            "unit": "acir_opcodes"
+          },
+          {
+            "name": "linked_nullifier/main",
+            "value": 451615,
+            "unit": "acir_opcodes"
+          },
+          {
+            "name": "memo_created_in_block/main",
+            "value": 531563,
+            "unit": "acir_opcodes"
+          },
+          {
+            "name": "note_membership/main",
+            "value": 604200,
+            "unit": "acir_opcodes"
+          },
+          {
+            "name": "nullifier_absence_2_blocks/main",
+            "value": 221519,
+            "unit": "acir_opcodes"
+          },
+          {
+            "name": "nullifier_inclusion/main",
+            "value": 33592,
+            "unit": "acir_opcodes"
+          },
+          {
+            "name": "spending_authority/main",
+            "value": 303308,
+            "unit": "acir_opcodes"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "mike@aztec.foundation",
+            "name": "iAmMichaelConnor",
+            "username": "iAmMichaelConnor"
+          },
+          "committer": {
+            "email": "mike@aztec.foundation",
+            "name": "iAmMichaelConnor",
+            "username": "iAmMichaelConnor"
+          },
+          "distinct": true,
+          "id": "07de58df9f1a1cf59c1bdbd44d00fba0ff34a9a1",
+          "message": "ci: let the packed-package test fetch dependencies the cache lacks",
+          "timestamp": "2026-11-11T16:43:16Z",
+          "tree_id": "9050b8a2bf02f833368b47c37f97c0987ee8d171",
+          "url": "https://github.com/iAmMichaelConnor/zcash-storage-proofs/commit/07de58df9f1a1cf59c1bdbd44d00fba0ff34a9a1"
+        },
+        "date": 1794415678511,
         "tool": "customSmallerIsBetter",
         "benches": [
           {
