@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794418121312,
+  "lastUpdate": 1794418417021,
   "repoUrl": "https://github.com/iAmMichaelConnor/zcash-storage-proofs",
   "entries": {
     "ACIR Opcodes": [
@@ -215,6 +215,70 @@ window.BENCHMARK_DATA = {
           "url": "https://github.com/iAmMichaelConnor/zcash-storage-proofs/commit/db44150606415eccdf60a2eb34d81ffcf3105385"
         },
         "date": 1794418119292,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "created_in_block/main",
+            "value": 173970,
+            "unit": "acir_opcodes"
+          },
+          {
+            "name": "header_history/main",
+            "value": 17173,
+            "unit": "acir_opcodes"
+          },
+          {
+            "name": "linked_nullifier/main",
+            "value": 451615,
+            "unit": "acir_opcodes"
+          },
+          {
+            "name": "memo_created_in_block/main",
+            "value": 531563,
+            "unit": "acir_opcodes"
+          },
+          {
+            "name": "note_membership/main",
+            "value": 604200,
+            "unit": "acir_opcodes"
+          },
+          {
+            "name": "nullifier_absence_2_blocks/main",
+            "value": 221519,
+            "unit": "acir_opcodes"
+          },
+          {
+            "name": "nullifier_inclusion/main",
+            "value": 33592,
+            "unit": "acir_opcodes"
+          },
+          {
+            "name": "spending_authority/main",
+            "value": 303308,
+            "unit": "acir_opcodes"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "41898282+github-actions[bot]@users.noreply.github.com",
+            "name": "github-actions[bot]",
+            "username": "github-actions[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "02019b0c9aca44f582b82eefcdfa0b78a1c797ba",
+          "message": "chore: Release 0.1.0 (#1)\n\nCo-authored-by: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>",
+          "timestamp": "2026-11-11T17:29:15Z",
+          "tree_id": "11dee985fa1568fff71bb41e40db155361459abb",
+          "url": "https://github.com/iAmMichaelConnor/zcash-storage-proofs/commit/02019b0c9aca44f582b82eefcdfa0b78a1c797ba"
+        },
+        "date": 1794418416413,
         "tool": "customSmallerIsBetter",
         "benches": [
           {
