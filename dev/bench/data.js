@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794414872285,
+  "lastUpdate": 1794414873629,
   "repoUrl": "https://github.com/iAmMichaelConnor/zcash-storage-proofs",
   "entries": {
     "ACIR Opcodes": [
@@ -153,6 +153,70 @@ window.BENCHMARK_DATA = {
           "url": "https://github.com/iAmMichaelConnor/zcash-storage-proofs/commit/f5c1eb33b4f07b030c10fd4ac56fb87e3db9d12d"
         },
         "date": 1794413973883,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "created_in_block/main",
+            "value": 861370,
+            "unit": "circuit_size"
+          },
+          {
+            "name": "header_history/main",
+            "value": 142206,
+            "unit": "circuit_size"
+          },
+          {
+            "name": "linked_nullifier/main",
+            "value": 987066,
+            "unit": "circuit_size"
+          },
+          {
+            "name": "memo_created_in_block/main",
+            "value": 1670380,
+            "unit": "circuit_size"
+          },
+          {
+            "name": "note_membership/main",
+            "value": 1316431,
+            "unit": "circuit_size"
+          },
+          {
+            "name": "nullifier_absence_2_blocks/main",
+            "value": 853833,
+            "unit": "circuit_size"
+          },
+          {
+            "name": "nullifier_inclusion/main",
+            "value": 553873,
+            "unit": "circuit_size"
+          },
+          {
+            "name": "spending_authority/main",
+            "value": 654923,
+            "unit": "circuit_size"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "mike@aztec.foundation",
+            "name": "iAmMichaelConnor",
+            "username": "iAmMichaelConnor"
+          },
+          "committer": {
+            "email": "mike@aztec.foundation",
+            "name": "iAmMichaelConnor",
+            "username": "iAmMichaelConnor"
+          },
+          "distinct": true,
+          "id": "42dc115f0e2c1b498cc6d4181fa183fd78894c29",
+          "message": "ci: make the benchmark and host jobs pass on hosted runners",
+          "timestamp": "2026-11-11T16:29:15Z",
+          "tree_id": "1222fae8efbe8f84afac93e116f50f72f68dbfe9",
+          "url": "https://github.com/iAmMichaelConnor/zcash-storage-proofs/commit/42dc115f0e2c1b498cc6d4181fa183fd78894c29"
+        },
+        "date": 1794414873592,
         "tool": "customSmallerIsBetter",
         "benches": [
           {
