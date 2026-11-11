@@ -134,7 +134,6 @@ try {
     imports,
     doctor,
     cliMode: mode.toString(8),
-    offlineInstall: true,
     published: false,
   };
   if (evidence)

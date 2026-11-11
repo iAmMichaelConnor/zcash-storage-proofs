@@ -164,7 +164,7 @@ npm ci --ignore-scripts --no-audit --no-fund
 npm run build            # tsc into dist/
 npm run typecheck
 npm test                 # build, then node --test tests/*.test.mjs
-npm run test:package     # npm pack, offline install into a scratch consumer, typecheck and import
+npm run test:package     # npm pack, install into a scratch consumer, typecheck and import
 npm run fixtures:check   # tests/fixtures match their generator
 npm run catalogue:check  # src/profile-catalogue.ts matches profiles/catalogue.v1.json
 npm run schemas:check    # src/schemas/ match scripts/host_schemas.py (`npm run schemas` rewrites)
